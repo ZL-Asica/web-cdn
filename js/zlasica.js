@@ -32,9 +32,24 @@ function grayScale() {
 
 // Custom console log
 console.log(
-  '%c由ZL Asica制作搭建与运行\nBuilt and Operated by ZL Asica',
-  'background:#fff;color:#000'
+  `%c\n` +
+    `  ______          _        _           \n` +
+    ` |__  / |        / \\   ___(_) ___ __ _ \n` +
+    `   / /| |       / _ \\ / __| |/ __/ _\` |\n` +
+    `  / /_| |___   / ___ \\\\__ \\ | (_| (_| |\n` +
+    ` /____|_____| /_/   \\_\\___/_|\\___\\__,_|\n` +
+    `                                       \n`,
+  "font-family: monospace; background: #222; color: #FFB6C1; font-size: 16px; padding: 8px; border-radius: 4px;"
 );
+console.log(
+  "%c由ZL Asica制作搭建与运行\nBuilt and Operated by ZL Asica",
+  "background:#222;color:#FFB6C1"
+);
+console.log(
+  "%c访问我的网站: https://www.zla.pub\nVisit my website: https://www.zla.pub",
+  "background:#222;color:#FFB6C1; font-size: 14px; padding: 4px; border-radius: 2px; text-decoration: underline;"
+);
+console.log(`%c${getCurrentDate()}`, "background:#222;color:#FFB6C1");
 
 // Check if the current URL path is "/"
 if (window.location.pathname === "/") {
