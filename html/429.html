@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>429 - (╯▂╰) 请求太频繁啦~</title>
+    <!-- Robots Meta -->
+    <meta
+      name="robots"
+      content="nofollow, noarchive"
+    />
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="/favicon.ico"
+      type="image/x-icon"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/gh/zl-asica/web-cdn/js/zlasica.js"
+    ></script>
+    <style>
+      /* 全局样式 */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Microsoft YaHei', Arial, sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #f9f9f9, #eaeaea);
+        color: #333;
+        text-align: center;
+        line-height: 1.6;
+        transition:
+          background 0.3s,
+          color 0.3s;
+      }
+
+      h1 {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        color: #ff7597;
+      }
+
+      p {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+
+      a {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        color: white;
+        background: linear-gradient(135deg, #ff7597, #ff93a8);
+        border-radius: 8px;
+        text-decoration: none;
+        transition:
+          background 0.3s,
+          transform 0.2s;
+      }
+
+      a:hover {
+        background: linear-gradient(135deg, #ff93a8, #ff7597);
+        transform: translateY(-2px);
+      }
+
+      .timer {
+        font-weight: bold;
+        color: #ff7597;
+      }
+
+      /* 暗色模式适配 */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: linear-gradient(135deg, #2b2b2b, #1f1f1f);
+          color: #f2d3dc;
+        }
+
+        a {
+          background: linear-gradient(135deg, #d47a92, #c26582);
+          color: #f2d3dc;
+        }
+
+        a:hover {
+          background: linear-gradient(135deg, #c26582, #d47a92);
+        }
+
+        .timer {
+          color: #d47a92;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>429 - (╯▂╰) 请求太多</h1>
+      <p>
+        抱歉，您的请求太频繁了，服务器需要休息一下 💤<br />
+        <span
+          id="timer"
+          class="timer"
+          >10</span
+        >
+        秒后将自动跳转到首页。
+      </p>
+      <a
+        href="/"
+        id="redirect-link"
+        >立即跳转</a
+      >
+    </main>
+    <script>
+      // 跳转设置
+      const redirectURL = '/'; // 默认跳转到网站首页
+      const countdownTime = 10; // 倒计时 10 秒
+
+      let timer = countdownTime;
+
+      const timerElement = document.getElementById('timer');
+      const redirectLink = document.getElementById('redirect-link');
+
+      redirectLink.href = redirectURL;
+
+      const interval = setInterval(() => {
+        timer -= 1;
+        timerElement.textContent = timer;
+
+        if (timer <= 0) {
+          clearInterval(interval);
+          window.location.href = redirectURL;
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
