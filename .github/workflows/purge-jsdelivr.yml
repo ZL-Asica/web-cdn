@@ -1,0 +1,22 @@
+name: 🧹 Purge jsDelivr Cache
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+
+jobs:
+  purge-cache:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 🛠️ Checkout the repository
+      - name: 📂 Checkout Repository
+        uses: actions/checkout@v4
+
+        # 🧹 Purge jsDelivr cache for the entire repository
+      - name: 🚀 Purge jsDelivr Cache
+        run: |
+          # 🌐 Send a request to purge jsDelivr's cache for the entire repository
+          curl -X GET "https://purge.jsdelivr.net/gh/zl-asica/web-cdn/" || echo "Purge request failed 😢"
+          echo "jsDelivr cache purge request sent successfully! 🚀"
