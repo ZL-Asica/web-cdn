@@ -1,5 +1,5 @@
 // Toaster notification
-function showToaster(
+function showTempToaster(
   message,
   duration = 3000, // Default to 3 seconds
   options = {}
@@ -50,78 +50,92 @@ function showToaster(
   }, duration);
 }
 
-const now = new Date();
-const currentMonthDay = `${String(now.getMonth() + 1).padStart(
-  2,
-  "0"
-)}-${String(now.getDate()).padStart(2, "0")}`;
+// Wrap all logic in an IIFE to prevent variable conflicts
+(() => {
+  const now = new Date();
+  const currentMonthDay = `${String(now.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-${String(now.getDate()).padStart(2, "0")}`;
 
-// Language dictionary
-const messages = {
-  en: "Today is a special day. We commemorate in silence for 3 seconds.",
-  zh: "今天是一个特殊的日子，我们将默哀3秒。",
-  "zh-CN": "今天是一个特殊的日子，我们将默哀3秒。",
-  "zh-TW": "今天是一個特殊的日子，我們將默哀3秒。",
-  fr: "Aujourd'hui est un jour spécial. Nous commémorons en silence pendant 3 secondes.",
-  ja: "今日は特別な日です。3秒間黙祷します。",
-  ko: "오늘은 특별한 날입니다. 3초간 침묵으로 추모합니다。",
-  es: "Hoy es un día especial. Conmemoramos en silencio durante 3 segundos。",
-  de: "Heute ist ein besonderer Tag. Wir gedenken 3 Sekunden lang in Stille。",
-};
+  const messages = {
+    en: "Today is a special day. We commemorate in silence for 3 seconds.",
+    zh: "今天是一个特殊的日子，我们将默哀3秒。",
+    "zh-CN": "今天是一个特殊的日子，我们将默哀3秒。",
+    "zh-TW": "今天是一個特殊的日子，我們將默哀3秒。",
+    fr: "Aujourd'hui est un jour spécial. Nous commémorons en silence pendant 3 secondes.",
+    ja: "今日は特別な日です。3秒間黙祷します。",
+    ko: "오늘은 특별한 날입니다. 3초간 침묵으로 추모합니다。",
+    es: "Hoy es un día especial. Conmemoramos en silencio durante 3 segundos。",
+    de: "Heute ist ein besonderer Tag. Wir gedenken 3 Sekunden lang in Stille。",
+  };
 
-// Function to get user's preferred language
-function getUserLanguage() {
-  const lang = navigator.language || "en";
-  return messages[lang] || messages[lang.split("-")[0]] || messages["en"];
-}
-
-// Gray scale effect (Only for specific dates)
-function grayScale() {
-  const grayScaleDates = ["04-04", "05-12", "09-18", "11-20", "12-13"];
-  if (grayScaleDates.includes(currentMonthDay)) {
-    document.body.style.filter = "grayscale(100%)";
-    document.body.style.transition = "filter 1s ease"; // Add transition effect
-
-    // Get the message based on user's language
-    const message = getUserLanguage();
-    showToaster(message);
+  function getUserLanguage() {
+    const lang = navigator.language || "en";
+    return messages[lang] || messages[lang.split("-")[0]] || messages["en"];
   }
-}
 
-// Clear gray scale effect
-function clearGrayScale() {
-  document.body.style.filter = "none";
-}
+  console.log(`
+      ______          _        _           
+    |__  / |        / \\   ___(_) ___ __ _ 
+      / /| |       / _ \\ / __| |/ __/ _\` |
+      / /_| |___   / ___ \\\\__ \\ | (_| (_| |
+    /____|_____| /_/   \\_\\___/_|\\___\\__,_|
+    
+    由 ZL Asica 制作搭建与运行
+    Built and Operated by ZL Asica
+    访问我的网站 / Visit my website:
+    https://www.zla.pub
+  
+  ${now.toLocaleString()}
+  `);
 
-// Custom console log
-console.log(`
-  ______          _        _           
- |__  / |        / \\   ___(_) ___ __ _ 
-   / /| |       / _ \\ / __| |/ __/ _\` |
-  / /_| |___   / ___ \\\\__ \\ | (_| (_| |
- /____|_____| /_/   \\_\\___/_|\\___\\__,_|
+  if (window.location.pathname === "/") {
+    // GrayScaleModule
+    const GrayScaleModule = (() => {
+      // Define the dates to apply the grayscale effect
+      const grayScaleDates = new Set([
+        "04-04",
+        "05-12",
+        "09-18",
+        "11-20",
+        "12-13",
+      ]);
 
-由ZL Asica制作搭建与运行
-Built and Operated by ZL Asica
-访问我的网站/Visit my website:
-https://www.zla.pub
+      // Check if the date string is in the grayScaleDates Set
+      const isGrayScaleDate = (dateStr) => grayScaleDates.has(dateStr);
 
-${now.toLocaleString()}
-`);
+      // Apply the grayscale effect
+      const applyGrayScale = () => {
+        Object.assign(document.body.style, {
+          filter: "grayscale(100%)",
+          transition: "filter 1s ease",
+        });
+      };
 
-// Check if the current page is the homepage
-if (window.location.pathname === "/") {
-  grayScale();
+      // Clear the grayscale effect
+      const clearGrayScale = () => {
+        document.body.style.filter = "none";
+      };
 
-  // Timeout to clear gray scale effect
-  setTimeout(() => {
-    clearGrayScale();
-  }, 3000);
+      return { isGrayScaleDate, applyGrayScale, clearGrayScale };
+    })();
 
-  // Listen for tab switching
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-      clearGrayScale(); // Clear gray scale effect
+    if (GrayScaleModule.isGrayScaleDate(currentMonthDay)) {
+      GrayScaleModule.applyGrayScale();
+
+      const message = getUserLanguage();
+      showTempToaster(message);
+
+      setTimeout(() => {
+        GrayScaleModule.clearGrayScale();
+      }, 3000);
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+          GrayScaleModule.clearGrayScale();
+        }
+      });
     }
-  });
-}
+  }
+})();
