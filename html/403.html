@@ -2,22 +2,12 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>403 - (＞﹏＜) 这个区域禁止访问哦~</title>
     <!-- Robots Meta -->
-    <meta
-      name="robots"
-      content="nofollow, noarchive"
-    />
+    <meta name="robots" content="nofollow, noarchive" />
     <!-- Favicon -->
-    <link
-      rel="icon"
-      href="/favicon.ico"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/gh/zl-asica/web-cdn/js/zlasica.js"
@@ -107,40 +97,32 @@
       <h1>403 - (＞﹏＜) 禁止访问</h1>
       <p>
         抱歉，这个地方暂时进不去，请确认您的权限哦 🛑<br />
-        <span
-          id="timer"
-          class="timer"
-          >10</span
-        >
+        <span id="timer" class="timer">10</span>
         秒后将自动跳转到首页。
       </p>
-      <a
-        href="/"
-        id="redirect-link"
-        >立即跳转</a
-      >
+      <a href="/" id="redirect-link">立即跳转</a>
     </main>
     <script>
       // 跳转设置
-      const redirectURL = '/'; // 默认跳转到网站首页
-      const countdownTime = 10; // 倒计时 10 秒
+      const redirectURL = '/' // 默认跳转到网站首页
+      const countdownTime = 10 // 倒计时 10 秒
 
-      let timer = countdownTime;
+      let timer = countdownTime
 
-      const timerElement = document.getElementById('timer');
-      const redirectLink = document.getElementById('redirect-link');
+      const timerElement = document.getElementById('timer')
+      const redirectLink = document.getElementById('redirect-link')
 
-      redirectLink.href = redirectURL;
+      redirectLink.href = redirectURL
 
       const interval = setInterval(() => {
-        timer -= 1;
-        timerElement.textContent = timer;
+        timer -= 1
+        timerElement.textContent = timer
 
         if (timer <= 0) {
-          clearInterval(interval);
-          window.location.href = redirectURL;
+          clearInterval(interval)
+          window.location.href = redirectURL
         }
-      }, 1000);
+      }, 1000)
     </script>
   </body>
 </html>

@@ -1,0 +1,77 @@
+[user]
+  name = ZL Asica
+  email = 40444637+ZL-Asica@users.noreply.github.com
+  # signingkey = GPG_KEY
+[core]
+  autocrlf = input
+  editor = code --wait
+  eol = lf
+[credential]
+  helper = store
+[commit]
+  gpgsign = true
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[alias]
+  co = checkout
+  sw = switch
+  br = branch
+  cm = commit
+  st = status
+  lg = log --oneline --graph --simplify-merges -n 20
+  hist = log --oneline --graph --all --decorate
+  last = log -p -1
+  diffc = diff --cached
+  diffn = diff --name-only origin/main
+  undo = reset --soft HEAD^
+  merged = branch --merged
+  unmerged = branch --no-merged
+  search = log --all --grep
+  re = rebase -i --committer --committer-date-is-author-date
+  am = commit --amend --date "$(git show -s --format=%ci HEAD^)"
+  amend = commit --amend --no-edit
+  please = push --force-with-lease
+  uncommit = reset --soft HEAD~1
+  squash = rebase -i HEAD~2
+  clean-branches = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+  fixup = "!f() { git commit --fixup=$1; GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash HEAD~$(git rev-list --count $1..HEAD); }; f"
+
+[diff]
+  tool = meld
+  colorMoved = default
+  mnemonicPrefix = true
+  submodule = log
+[merge]
+  tool = meld
+[rebase]
+  autosquash = true
+  autostash = true
+  updateRefs = true
+  gpgSign = true
+[color]
+  ui = auto
+[format]
+  pretty = format:%C(yellow)%h%C(reset) %s %C(green)(%cr) %C(bold blue)<%an>%C(reset)
+[pull]
+  rebase = true
+[pager]
+  log = false
+  show = false
+  diff = false
+  branch = false
+  tag = false
+[push]
+  default = current
+[init]
+  defaultBranch = main
+[status]
+  showUntrackedFiles = all
+  renameLimit = 5000
+  submoduleSummary = true
+  relativePaths = false
+[fetch]
+  prune = true
+  pruneTags = true
