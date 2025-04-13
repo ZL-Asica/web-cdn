@@ -94,18 +94,18 @@ function showTempToaster(
     ███╔╝  ██║         ██╔══██║╚════██║██║██║     ██╔══██║
     ███████╗███████╗    ██║  ██║███████║██║╚██████╗██║  ██║
     ╚══════╝╚══════╝    ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝╚═╝  ╚═╝
-  `, 'color: #f6a8b8; font-weight: bold; text-shadow: 2px 2px 4px rgba(246,168,184,0.6); font-size: 14px;')
+  `, 'color: #ff9fb2; font-weight: bold; text-shadow: 2px 2px 4px rgba(255,159,178,0.6); font-size: 14px;')
 
   // eslint-disable-next-line no-console
   console.log(`%c
     🚀 由 %cZL Asica%c 制作搭建与运行
       Built & Operated by %cZL Asica%c
 
-    🔗 访问我的博客 / Visit My Blog:
-      %chttps://www.zla.pub%c
+    🔗 访问我的博客 (Visit My Blog):
+      %chttps://zla.pub%c
     
     📅 当前时间 (Current Time): %c${now.toLocaleString()}%c
-  `, 'color: #39c5f7; font-weight: bold; font-size: 12px;', 'color: #f17b96; font-weight: bold; font-size: 14px;', 'color: #39c5f7; font-weight: bold; font-size: 12px;', 'color: #f17b96; font-weight: bold; font-size: 14px;', 'color: #39c5f7; font-weight: bold; font-size: 12px;', 'color: #39c5f7; font-weight: bold; text-decoration: underline;', 'color: #39c5f7;', 'color: #ffa94d; font-weight: bold; font-size: 12px;', 'color: #39c5f7; font-size: 12px;')
+  `, 'color: #91c7e0; font-weight: bold; font-size: 12px;', 'color: #f17b96; font-weight: bold; font-size: 14px;', 'color: #91c7e0; font-weight: bold; font-size: 12px;', 'color: #f17b96; font-weight: bold; font-size: 14px;', 'color: #91c7e0; font-weight: bold; font-size: 12px;', 'color: #91c7e0; font-weight: bold; text-decoration: underline;', 'color: #91c7e0;', 'color: #81e6d9; font-weight: bold; font-size: 12px;', 'color: #91c7e0; font-size: 12px;')
 
   if (window.location.pathname === '/') {
     // GrayScaleModule
