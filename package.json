@@ -1,7 +1,7 @@
 {
   "name": "web-cdn",
   "version": "1.0.0",
-  "packageManager": "pnpm@10.8.0",
+  "packageManager": "pnpm@10.10.0",
   "description": "",
   "author": "ZL Asica",
   "keywords": [],
@@ -12,18 +12,18 @@
     "postinstall": "husky"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.12.0",
-    "eslint": "^9.24.0",
+    "@antfu/eslint-config": "^4.13.0",
+    "eslint": "^9.26.0",
     "eslint-plugin-format": "^1.0.1",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.1",
+    "lint-staged": "^16.0.0",
     "prettier": "^3.5.3"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx,json,yml}": [
+    "**/*.{js,jsx,ts,tsx,json,yml,css,scss,less,styl,html}": [
       "eslint --fix"
     ],
-    "**/*.{css,scss,less,styl,html,md}": [
+    "**/*.md": [
       "prettier --write"
     ]
   },

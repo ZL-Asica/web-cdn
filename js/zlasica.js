@@ -1,3 +1,5 @@
+const totalDuration = 10000
+
 /**
  * This function creates a temporary toaster notification that
  *    fades in, stays for a specified duration, and fades out.
@@ -12,13 +14,13 @@
  */
 function showTempToaster(
   message,
-  duration = 3000, // Default to 3 seconds
+  duration = 10000, // Default to 10 seconds
   options = {},
 ) {
   const {
-    backgroundColor = 'rgba(33, 33, 33, 0.9)', // Default dark gray
+    backgroundColor = 'rgba(33, 33, 33, 0.95)', // Default dark gray
     textColor = 'white', // Default white text
-    fontSize = '18px', // Default font size
+    fontSize = '20px', // Default font size
   } = options
 
   const toaster = document.createElement('div')
@@ -69,16 +71,18 @@ function showTempToaster(
     '0',
   )}-${String(now.getDate()).padStart(2, '0')}`
 
+  const humanReadableDuration = Math.floor(totalDuration / 1000)
+
   const messages = {
-    'en': 'Today is a special day. We commemorate in silence for 10 seconds.',
-    'zh': '今天是一个特殊的日子，我们将默哀 10 秒。',
-    'zh-CN': '今天是一个特殊的日子，我们将默哀 10 秒。',
-    'zh-TW': '今天是一個特殊的日子，我們將默哀 10 秒。',
-    'fr': 'Aujourd\'hui est un jour spécial. Nous commémorons en silence pendant 10 secondes.',
-    'ja': '今日は特別な日です。10 秒間黙祷します。',
-    'ko': '오늘은 특별한 날입니다. 10 초간 침묵으로 추모합니다。',
-    'es': 'Hoy es un día especial. Conmemoramos en silencio durante 10 segundos。',
-    'de': 'Heute ist ein besonderer Tag. Wir gedenken 10 Sekunden lang in Stille。',
+    'en': `Today is a special day. We commemorate in silence for ${humanReadableDuration} seconds.`,
+    'zh': `今天是一个特殊的日子，我们将默哀 ${humanReadableDuration} 秒。`,
+    'zh-CN': `今天是一个特殊的日子，我们将默哀 ${humanReadableDuration} 秒。`,
+    'zh-TW': `今天是一個特殊的日子，我們將默哀 ${humanReadableDuration} 秒。`,
+    'fr': `Aujourd'hui est un jour spécial. Nous commémorons en silence pendant ${humanReadableDuration} secondes.`,
+    'ja': `今日は特別な日です。${humanReadableDuration} 秒間黙祷します。`,
+    'ko': `오늘은 특별한 날입니다. ${humanReadableDuration} 초간 침묵으로 추모합니다。`,
+    'es': `Hoy es un día especial. Conmemoramos en silencio durante ${humanReadableDuration} segundos.`,
+    'de': `Heute ist ein besonderer Tag. Wir gedenken ${humanReadableDuration} Sekunden lang in Stille.`,
   }
 
   function getUserLanguage() {
@@ -97,7 +101,8 @@ function showTempToaster(
   `, 'color: #ff9fb2; font-weight: bold; text-shadow: 2px 2px 4px rgba(255,159,178,0.6); font-size: 14px;')
 
   // eslint-disable-next-line no-console
-  console.log(`%c
+  console.log(
+    `%c
     🚀 由 %cZL Asica%c 制作搭建与运行
       Built & Operated by %cZL Asica%c
 
@@ -105,7 +110,17 @@ function showTempToaster(
       %chttps://zla.pub%c
     
     📅 当前时间 (Current Time): %c${now.toLocaleString()}%c
-  `, 'color: #91c7e0; font-weight: bold; font-size: 12px;', 'color: #f17b96; font-weight: bold; font-size: 14px;', 'color: #91c7e0; font-weight: bold; font-size: 12px;', 'color: #f17b96; font-weight: bold; font-size: 14px;', 'color: #91c7e0; font-weight: bold; font-size: 12px;', 'color: #91c7e0; font-weight: bold; text-decoration: underline;', 'color: #91c7e0;', 'color: #81e6d9; font-weight: bold; font-size: 12px;', 'color: #91c7e0; font-size: 12px;')
+  `,
+    'color: #91c7e0; font-weight: bold; font-size: 12px;',
+    'color: #f17b96; font-weight: bold; font-size: 14px;',
+    'color: #91c7e0; font-weight: bold; font-size: 12px;',
+    'color: #f17b96; font-weight: bold; font-size: 14px;',
+    'color: #91c7e0; font-weight: bold; font-size: 12px;',
+    'color: #91c7e0; font-weight: bold; text-decoration: underline;',
+    'color: #91c7e0;',
+    'color: #81e6d9; font-weight: bold; font-size: 12px;',
+    'color: #91c7e0; font-size: 12px;',
+  )
 
   if (window.location.pathname === '/') {
     // GrayScaleModule
@@ -143,11 +158,11 @@ function showTempToaster(
       GrayScaleModule.applyGrayScale()
 
       const message = getUserLanguage()
-      showTempToaster(message)
+      showTempToaster(message, totalDuration)
 
       setTimeout(() => {
         GrayScaleModule.clearGrayScale()
-      }, 10000) // 10 seconds
+      }, totalDuration)
 
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
