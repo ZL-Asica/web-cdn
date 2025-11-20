@@ -1,66 +1,143 @@
-const totalDuration = 10000
+const totalDuration = 10_000
 
-/**
- * This function creates a temporary toaster notification that
- *    fades in, stays for a specified duration, and fades out.
- *
- * @param {string} message - The message to display in the toaster
- * @param {number} duration - The duration to display the toaster in milliseconds
- * @param {object} options - Additional options for the toaster
- * @param {string} options.backgroundColor - The background color of the toaster
- * @param {string} options.textColor - The text color of the toaster
- * @param {string} options.fontSize - The font size of the toaster
- * @returns {void}
- */
+// Define the dates to apply the grayscale effect
+const grayScaleDates = new Set([
+  '01-27',
+  '05-12',
+  '07-07',
+  '09-18',
+  '11-20',
+  '12-13',
+])
+
+// Inject toast styles once
+function ensureToastStyles() {
+  if (document.getElementById('zl-toast-style')) {
+    return
+  }
+
+  const style = document.createElement('style')
+  style.id = 'zl-toast-style'
+  style.textContent = `
+    .zl-toast {
+      position: fixed;
+      left: 50%;
+      top: 20px;
+      transform: translateX(-50%) translateY(8px);
+      /* Wider on desktop so it wraps less aggressively */
+      max-width: min(560px, 96vw);
+      padding: 12px 20px;
+      background-color: var(--zl-toast-bg, rgba(33, 33, 33, 0.95));
+      color: var(--zl-toast-fg, #ffffff);
+      border-radius: 8px;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.2),
+        0 1px 3px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+      text-align: center;
+      line-height: 1.5;
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      z-index: 9999;
+      box-sizing: border-box;
+      /* More natural wrapping: keep words when possible */
+      word-break: normal;
+      overflow-wrap: anywhere;
+      pointer-events: none;
+    }
+
+    @media (max-width: 640px) {
+      .zl-toast {
+        top: 10px;
+        /* Smaller outer margin on mobile: 8px each side */
+        max-width: calc(100% - 16px);
+        padding: 8px 12px;
+        font-size: 14px;
+        transform: translateX(-50%) translateY(6px);
+      }
+    }
+  `
+  document.head.appendChild(style)
+}
+
 function showTempToaster(
   message,
-  duration = 10000, // Default to 10 seconds
+  duration = 10000,
   options = {},
 ) {
   const {
-    backgroundColor = 'rgba(33, 33, 33, 0.95)', // Default dark gray
-    textColor = 'white', // Default white text
-    fontSize = '20px', // Default font size
+    backgroundColor = 'rgba(33, 33, 33, 0.95)',
+    textColor = 'white',
   } = options
 
+  if (typeof document === 'undefined') {
+    return
+  }
+
+  ensureToastStyles()
+
   const toaster = document.createElement('div')
+  toaster.className = 'zl-toast'
   toaster.textContent = message
 
-  // Material Design inspired styles
-  toaster.style.position = 'fixed'
-  toaster.style.top = '20px' // Top of the screen
-  toaster.style.left = '50%' // Center horizontally
-  toaster.style.transform = 'translateX(-50%)' // Align to center
-  toaster.style.maxWidth = '90%' // Limit width for smaller screens
-  toaster.style.padding = '15px 25px' // Larger padding for better readability
-  toaster.style.backgroundColor = backgroundColor // Customizable background color
-  toaster.style.color = textColor // Customizable text color
-  toaster.style.borderRadius = '8px' // Rounded corners
-  toaster.style.boxShadow
-    = '0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1)'
-  toaster.style.fontSize = fontSize // Customizable font size
-  toaster.style.textAlign = 'center' // Center the text
-  toaster.style.lineHeight = '1.4'
-  toaster.style.opacity = '0'
-  toaster.style.transition = 'opacity 0.5s ease, transform 0.5s ease' // Add transition for fade-in and slight movement
-  toaster.style.zIndex = '9999'
+  // Pass customizable colors via CSS variables
+  toaster.style.setProperty('--zl-toast-bg', backgroundColor)
+  toaster.style.setProperty('--zl-toast-fg', textColor)
 
   document.body.appendChild(toaster)
 
-  // Show the toaster with fade-in and slight slide-down effect
-  setTimeout(() => {
-    toaster.style.opacity = '1'
-    toaster.style.transform = 'translateX(-50%) translateY(10px)' // Slide down slightly
-  }, 100)
+  // Fade in
+  requestAnimationFrame(() => {
+    // Let layout settle before animation
+    requestAnimationFrame(() => {
+      toaster.style.opacity = '1'
+      toaster.style.transform = toaster.style.transform
+        .replace('8px', '0')
+        .replace('6px', '0')
+    })
+  })
 
-  // Remove the toaster after the specified duration
+  // Fade out
   setTimeout(() => {
     toaster.style.opacity = '0'
-    toaster.style.transform = 'translateX(-50%) translateY(0)' // Reset position
+    // No need to change transform here — initial offset is in CSS
     setTimeout(() => {
       toaster.remove()
-    }, 500) // Wait for fade-out transition to complete
+    }, 400)
   }, duration)
+}
+
+function isHomeLikePath() {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  let path = window.location.pathname || '/'
+
+  // Make sure the path starts with /
+  if (!path.startsWith('/')) {
+    path = `/${path}`
+  }
+
+  // Remove trailing slashes, but keep the root '/'
+  if (path !== '/' && path.endsWith('/')) {
+    path = path.slice(0, -1)
+  }
+
+  // Here list all the paths should be considered as "home"
+  const HOME_PATHS = [
+    '/', // Domain root
+    '/index.html', // Static homepage
+    '/index.htm',
+    // Language roots to also count as "home":
+    '/zh',
+    '/zh-cn',
+    '/en',
+    '/ja',
+    '/en-us',
+  ]
+
+  return HOME_PATHS.includes(path.toLowerCase())
 }
 
 // Wrap all logic in an IIFE to prevent variable conflicts
@@ -122,22 +199,18 @@ function showTempToaster(
     'color: #91c7e0; font-size: 12px;',
   )
 
-  if (window.location.pathname === '/') {
+  const isHomeLike = isHomeLikePath()
+  // Check if the date string is in the grayScaleDates Set
+  const isGrayScaleDate = grayScaleDates.has(currentMonthDay)
+
+  // eslint-disable-next-line no-console
+  console.log(
+    `%c[ZL Asica Script] isHomeLike: ${isHomeLike}, currentMonthDay: ${currentMonthDay}, isGrayScaleDate: ${isGrayScaleDate}`,
+    'color: #91c7e0; font-weight: bold;',
+  )
+  if (isHomeLike) {
     // GrayScaleModule
     const GrayScaleModule = (() => {
-      // Define the dates to apply the grayscale effect
-      const grayScaleDates = new Set([
-        '01-27',
-        '05-12',
-        '07-07',
-        '09-18',
-        '11-20',
-        '12-13',
-      ])
-
-      // Check if the date string is in the grayScaleDates Set
-      const isGrayScaleDate = dateStr => grayScaleDates.has(dateStr)
-
       // Apply the grayscale effect
       const applyGrayScale = () => {
         Object.assign(document.body.style, {
@@ -151,10 +224,10 @@ function showTempToaster(
         document.body.style.filter = 'none'
       }
 
-      return { isGrayScaleDate, applyGrayScale, clearGrayScale }
+      return { applyGrayScale, clearGrayScale }
     })()
 
-    if (GrayScaleModule.isGrayScaleDate(currentMonthDay)) {
+    if (isGrayScaleDate) {
       GrayScaleModule.applyGrayScale()
 
       const message = getUserLanguage()
