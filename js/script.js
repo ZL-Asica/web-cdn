@@ -25,7 +25,9 @@ const timerElement = document.getElementById('timer')
 const redirectLink = document.getElementById('redirect-link')
 const backButton = document.getElementById('back-button')
 
-redirectLink.href = redirectURL
+if (redirectLink) {
+  redirectLink.href = redirectURL
+}
 
 // Timer Countdown (also for screen readers)
 const interval = setInterval(() => {

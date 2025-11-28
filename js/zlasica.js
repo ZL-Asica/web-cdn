@@ -1,4 +1,4 @@
-const totalDuration = 10_000
+const zlaToastTotalDuration = 10_000
 
 // Define the dates to apply the grayscale effect
 const grayScaleDates = new Set([
@@ -148,7 +148,7 @@ function isHomeLikePath() {
     '0',
   )}-${String(now.getDate()).padStart(2, '0')}`
 
-  const humanReadableDuration = Math.floor(totalDuration / 1000)
+  const humanReadableDuration = Math.floor(zlaToastTotalDuration / 1000)
 
   const messages = {
     'en': `Today is a special day. We commemorate in silence for ${humanReadableDuration} seconds.`,
@@ -231,11 +231,11 @@ function isHomeLikePath() {
       GrayScaleModule.applyGrayScale()
 
       const message = getUserLanguage()
-      showTempToaster(message, totalDuration)
+      showTempToaster(message, zlaToastTotalDuration)
 
       setTimeout(() => {
         GrayScaleModule.clearGrayScale()
-      }, totalDuration)
+      }, zlaToastTotalDuration)
 
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
